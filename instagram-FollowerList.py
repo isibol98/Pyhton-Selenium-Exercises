@@ -6,10 +6,12 @@ import time
 
 class Instagram:
     def __init__(self, username, password):
-        self.browser = webdriver.Chrome()
+        self.browserProfile = webdriver.ChromeOptions()
+        self.browserProfile.add_experimental_option("prefs", {"intl.accept_languages":"en,en_US"})
+        self.browser = webdriver.Chrome("chromedriver.exe", chrome_options=self.browserProfile)
         self.username = username
         self.password = password
-        self.followers = []
+        
     def signIn (self):
         self.browser.get("https://www.instagram.com/")
         time.sleep(2)
