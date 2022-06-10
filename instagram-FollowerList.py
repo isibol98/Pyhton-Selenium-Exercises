@@ -4,7 +4,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
 
-
 class Instagram:
     def __init__(self, username, password):
         self.browser = webdriver.Chrome()
@@ -27,7 +26,28 @@ class Instagram:
     def getFollowers (self):
         self.browser.get(f"https://www.instagram.com/{username}/followers/")
         time.sleep(3)
-        followerList = self.browser.find_element(By.CSS_SELECTOR, "div[role=dialog] ul").find_elements(By.CSS_SELECTOR, "li")
+
+        dialog = self.browser.find_element(By.CSS_SELECTOR, "div[role=dialog] ul").find_elements(By.CSS_SELECTOR, "li")
+        followerCount = len(followerList = dialog.find_elements(By.CSS_SELECTOR, "li"))
+        print(f"First Follower Count: {followerCount}")
+
+        action = webdriver.ActionChains(self.browser)
+
+        while True:
+            dialog.click()
+            action.key_down(Keys.SPACE).key_up(Keys.SPACE).perform()
+            time.sleep(2)
+
+            newCount = len(followerList = dialog.find_elements(By.CSS_SELECTOR, "li"))
+
+            if followerCount != newCount:
+                followerCount = newCount
+                print(f"Follower Count: {followerCount}")
+                pass
+            else:
+                break
+
+        followerList = dialog.find_elements(By.CSS_SELECTOR, "li")
         for user in followerList:
             link = user.find_element(By.CSS_SELECTOR, "a").get_attribute("href")
             print(link)
