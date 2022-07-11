@@ -36,6 +36,20 @@ class Twitter:
         searchInput.send_keys("python")
         time.sleep(2)
         searchInput.send_keys(Keys.ENTER)
+        time.sleep(2)
+
+        last_height = self.browser.execute_script("return document.documentElement.scrollHeight")
+        while True:
+            self.browser.execute_script("window.scrollTo(0,document.documentElement.scrollHeight);")
+            time.sleep(5)
+            new_height = self.browser.execute_script("return document.documentElement.scrollHeight")
+            if last_height == new_height:
+                break
+            last_height = new_height
+
+
+
+  
 
 twitter = Twitter(username, password)
 twitter.signIn()
